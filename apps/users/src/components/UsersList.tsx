@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
-import { ListIcon } from "lucide-react";
+import { ListIcon, SearchAlertIcon } from "lucide-react";
 import useGetUsers from "@/hooks/useGetUsers";
 import Loader from "./loader";
 import { usePagination } from "@/hooks/usepagination";
@@ -18,6 +18,7 @@ import UserDetails from "./user-details";
 import Filters from "./filters";
 import useFilters from "@/hooks/useFilters";
 import type { User } from "@/types/user.types";
+import SystemMessage from "./system-messages";
 
 export default function UsersList() {
   const { page, per } = usePagination();
@@ -35,7 +36,20 @@ export default function UsersList() {
 
   if (isLoading) return <Loader />;
   if (isError) {
-    return <div>Error occurred while fetching users.</div>;
+    return (
+      <SystemMessage type="error">
+        <SearchAlertIcon className="size-8 mr-2" />
+        <h1>Server Error</h1>
+      </SystemMessage>
+    );
+  }
+  if (data.error) {
+    return (
+      <SystemMessage type="error">
+        <SearchAlertIcon className="size-8 mr-2" />
+        <h1>{data.error}</h1>
+      </SystemMessage>
+    );
   }
 
   return (
