@@ -6,14 +6,25 @@ import { useEffect } from "react";
 interface UseGetUserParams {
   page: number;
   per: number;
+  role?: string;
+  status?: string;
+  name?: string;
+  email?: string;
 }
 
-export default function useGetUsers({ page, per }: UseGetUserParams) {
+export default function useGetUsers({
+  page,
+  per,
+  role,
+  status,
+  name,
+  email,
+}: UseGetUserParams) {
   const { setUsersResponse } = useUsers();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["USER_LIST", page, per],
-    queryFn: () => getUsers(page, per),
+    queryKey: ["USER_LIST", page, per, role, status, name, email],
+    queryFn: () => getUsers(page, per, role, status, name, email),
   });
 
   useEffect(() => {

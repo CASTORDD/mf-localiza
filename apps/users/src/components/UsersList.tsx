@@ -15,12 +15,23 @@ import { usePagination } from "@/hooks/usepagination";
 import Pagination from "./pagination";
 import useUsers from "@/hooks/useUsers";
 import UserDetails from "./user-details";
+import Filters from "./filters";
+import useFilters from "@/hooks/useFilters";
+import type { User } from "@/types/user.types";
 
 export default function UsersList() {
   const { page, per } = usePagination();
+  const { role, status, name, email } = useFilters();
   const { userId, setUserId } = useUsers();
 
-  const { data, isLoading, isError } = useGetUsers({ page, per });
+  const { data, isLoading, isError } = useGetUsers({
+    page,
+    per,
+    role,
+    status,
+    name,
+    email,
+  });
 
   if (isLoading) return <Loader />;
   if (isError) {
@@ -29,6 +40,7 @@ export default function UsersList() {
 
   return (
     <div className="flex flex-col gap-4">
+      <Filters />
       <Table>
         <TableCaption>
           Total users <strong>{data.items}</strong>.
@@ -43,7 +55,7 @@ export default function UsersList() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.data.map((user) => (
+          {data?.data.map((user: User) => (
             <TableRow key={`ulk-${user.id}`}>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>

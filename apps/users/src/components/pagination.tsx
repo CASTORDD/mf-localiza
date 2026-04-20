@@ -30,9 +30,9 @@ type PaginationProps = ComponentProps<"div">;
 
 export default function Pagination({ className, ...props }: PaginationProps) {
   const { usersResponse } = useUserDetail();
-  const { page, setPage, goToPrev, goToNext } = usePagination();
+  const { page, per, setPage, goToPrev, goToNext } = usePagination();
 
-  if (usersResponse?.items === 0) return null;
+  if (Number(usersResponse?.pages) / per <= 1) return null;
 
   return (
     <div
@@ -52,15 +52,21 @@ export default function Pagination({ className, ...props }: PaginationProps) {
           <ChevronLeft className="size-5" />
         </PaginationButton>
       )}
-      {Array.from({ length: 5 }, (_, i) => (
-        <PaginationButton
-          key={i}
-          className="cursor-pointer"
-          onClick={() => setPage(Number(`${page + i}`))}
-        >
-          {page + i}
-        </PaginationButton>
-      ))}
+      {Array.from(
+        {
+          length:
+            Number(usersResponse?.pages) < 5 ? Number(usersResponse?.pages) : 5,
+        },
+        (_, i) => (
+          <PaginationButton
+            key={i}
+            className="cursor-pointer"
+            onClick={() => setPage(Number(`${page + i}`))}
+          >
+            {page + i}
+          </PaginationButton>
+        ),
+      )}
       {usersResponse?.next && (
         <PaginationButton className="cursor-pointer" onClick={goToNext}>
           <ChevronRight className="size-5" />
