@@ -13,9 +13,13 @@ import useGetUsers from "@/hooks/useGetUsers";
 import Loader from "./loader";
 import { usePagination } from "@/hooks/usepagination";
 import Pagination from "./pagination";
+import useUsers from "@/hooks/useUsers";
+import UserDetails from "./user-details";
 
 export default function UsersList() {
   const { page, per } = usePagination();
+  const { userId, setUserId } = useUsers();
+
   const { data, isLoading, isError } = useGetUsers({ page, per });
 
   if (isLoading) return <Loader />;
@@ -49,7 +53,7 @@ export default function UsersList() {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    console.log(user.id);
+                    setUserId(user.id);
                   }}
                 >
                   <ListIcon className="size-5" />
@@ -60,6 +64,7 @@ export default function UsersList() {
         </TableBody>
       </Table>
       <Pagination />
+      {userId && <UserDetails />}
     </div>
   );
 }
