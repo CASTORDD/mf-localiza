@@ -9,59 +9,21 @@ import {
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
 import { ListIcon } from "lucide-react";
-
-const MOCK_USERS = [
-  {
-    id: "001c45ae-8f0a-43b0-bf8a-5c4403797ccf",
-    name: "Usuario 344",
-    email: "usuario344_1776553999@example.com",
-    cpf: "77886180685",
-    role: "operator",
-    status: "pending",
-    department: "it",
-    createdAt: "2023-01-29 09:09:22.640568",
-    lastLogin: "2025-08-10 19:49:06.455388",
-  },
-  {
-    id: "001c45ae-8f0a-43b0-bf8a-5c4403797ccf",
-    name: "Usuario 344",
-    email: "usuario344_1776553999@example.com",
-    cpf: "77886180685",
-    role: "operator",
-    status: "pending",
-    department: "it",
-    createdAt: "2023-01-29 09:09:22.640568",
-    lastLogin: "2025-08-10 19:49:06.455388",
-  },
-  {
-    id: "001c45ae-8f0a-43b0-bf8a-5c4403797ccf",
-    name: "Usuario 344",
-    email: "usuario344_1776553999@example.com",
-    cpf: "77886180685",
-    role: "operator",
-    status: "pending",
-    department: "it",
-    createdAt: "2023-01-29 09:09:22.640568",
-    lastLogin: "2025-08-10 19:49:06.455388",
-  },
-  {
-    id: "001c45ae-8f0a-43b0-bf8a-5c4403797ccf",
-    name: "Usuario 344",
-    email: "usuario344_1776553999@example.com",
-    cpf: "77886180685",
-    role: "operator",
-    status: "pending",
-    department: "it",
-    createdAt: "2023-01-29 09:09:22.640568",
-    lastLogin: "2025-08-10 19:49:06.455388",
-  },
-];
+import useGetUsers from "@/hooks/useGetUsers";
+import Loader from "./loader";
 
 export default function UsersList() {
+  const { data, isLoading, isError } = useGetUsers();
+
+  if (isLoading) return <Loader />;
+  if (isError) {
+    return <div>Error occurred while fetching users.</div>;
+  }
+
   return (
     <Table>
       <TableCaption>
-        Total users <strong>{MOCK_USERS.length}</strong>.
+        Total users <strong>{data.items}</strong>.
       </TableCaption>
       <TableHeader>
         <TableRow>
@@ -73,8 +35,8 @@ export default function UsersList() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {MOCK_USERS.map((user) => (
-          <TableRow key={user.id}>
+        {data?.data.map((user) => (
+          <TableRow key={`ulk-${user.id}`}>
             <TableCell>{user.name}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.role}</TableCell>
