@@ -2,11 +2,11 @@ const currentImports = {};
       const exportSet = new Set(['Module', '__esModule', 'default', '_export_sfc']);
       let moduleMap = {
 "./UsersList":()=>{
-      dynamicLoadingCss([], false, './UsersList');
-      return __federation_import('./__federation_expose_UsersList-DirZe2-m.js').then(module =>Object.keys(module).every(item => exportSet.has(item)) ? () => module.default : () => module)},
+      dynamicLoadingCss(["style-D7L7L_kV.css"], false, './UsersList');
+      return __federation_import('./__federation_expose_UsersList-DTi-5E7b.js').then(module =>Object.keys(module).every(item => exportSet.has(item)) ? () => module.default : () => module)},
 "./UsersApp":()=>{
-      dynamicLoadingCss([], false, './UsersApp');
-      return __federation_import('./__federation_expose_UsersApp-BDb40af0.js').then(module =>Object.keys(module).every(item => exportSet.has(item)) ? () => module.default : () => module)},};
+      dynamicLoadingCss(["style-D7L7L_kV.css"], false, './UsersApp');
+      return __federation_import('./__federation_expose_UsersApp-DqFiZT83.js').then(module =>Object.keys(module).every(item => exportSet.has(item)) ? () => module.default : () => module)},};
       const seen = {};
       const dynamicLoadingCss = (cssFilePaths, dontAppendStylesToHead, exposeItemName) => {
         const metaUrl = import.meta.url;
