@@ -6,10 +6,10 @@ import { useEffect } from "react";
 interface UseGetUserParams {
   page: number;
   per: number;
-  role?: string;
-  status?: string;
-  name?: string;
-  email?: string;
+  role?: string | null;
+  status?: string | null;
+  name?: string | null;
+  email?: string | null;
 }
 
 export default function useGetUsers({
