@@ -1,5 +1,15 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5555";
 
+export class ApiError extends Error {
+  code: number;
+
+  constructor(code: number, message: string) {
+    super(message);
+    this.code = code;
+    this.name = "ApiError";
+  }
+}
+
 export const getUsers = async (
   page: number,
   limit: number,
@@ -13,7 +23,7 @@ export const getUsers = async (
   );
 
   if (!response.ok) {
-    return { data: null, error: response.statusText, code: response.status };
+    throw new ApiError(response.status, response.statusText);
   }
 
   return response.json();

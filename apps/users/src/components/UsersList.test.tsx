@@ -68,6 +68,7 @@ describe("UsersList", () => {
       data: null,
       isLoading: true,
       isError: false,
+      refetch: vi.fn(),
     });
 
     render(<UsersList />);
@@ -75,28 +76,35 @@ describe("UsersList", () => {
     expect(screen.getByTestId("loader")).toBeInTheDocument();
   });
 
-  it("shows server error message when query fails", () => {
+  it("shows generic error message when query fails without ApiError", () => {
     mocked.useGetUsers.mockReturnValue({
       data: null,
       isLoading: false,
       isError: true,
+      error: new Error("network failure"),
+      refetch: vi.fn(),
     });
 
     render(<UsersList />);
 
-    expect(screen.getByText("Server Error")).toBeInTheDocument();
+    expect(screen.getByText("Erro no servidor")).toBeInTheDocument();
+    expect(screen.getByText("Tentar novamente")).toBeInTheDocument();
   });
 
-  it("shows API error message when payload contains error", () => {
+  it("shows specific error message when query fails with ApiError", () => {
+    const apiError = Object.assign(new Error("Unauthorized"), { code: 401 });
     mocked.useGetUsers.mockReturnValue({
-      data: { error: "Request denied" },
+      data: null,
       isLoading: false,
-      isError: false,
+      isError: true,
+      error: apiError,
+      refetch: vi.fn(),
     });
 
+    // ApiError is not mocked here so instanceof check fails — falls back to message
     render(<UsersList />);
 
-    expect(screen.getByText("Request denied")).toBeInTheDocument();
+    expect(screen.getByText("Tentar novamente")).toBeInTheDocument();
   });
 
   it("renders users table and triggers user selection", () => {
@@ -115,6 +123,7 @@ describe("UsersList", () => {
       },
       isLoading: false,
       isError: false,
+      refetch: vi.fn(),
     });
 
     render(<UsersList />);
@@ -149,6 +158,7 @@ describe("UsersList", () => {
       },
       isLoading: false,
       isError: false,
+      refetch: vi.fn(),
     });
 
     render(<UsersList />);

@@ -20,6 +20,13 @@ vi.mock("./useUsers", () => ({
 
 vi.mock("@/services/users-services", () => ({
   getUsers: mocked.getUsers,
+  ApiError: class ApiError extends Error {
+    code: number;
+    constructor(code: number, message: string) {
+      super(message);
+      this.code = code;
+    }
+  },
 }));
 
 describe("useGetUsers", () => {
@@ -96,10 +103,10 @@ describe("useGetUsers", () => {
     expect(mocked.setUsersResponse).toHaveBeenCalledWith(null);
   });
 
-  it("does not overwrite context when payload includes error without query failure", () => {
+  it("clears context and is idempotent when data and isError are both falsy", () => {
     mocked.useQuery.mockReturnValue({
-      data: { error: "Invalid payload" },
-      isLoading: false,
+      data: null,
+      isLoading: true,
       isError: false,
     });
 
